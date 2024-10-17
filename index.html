@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Home</title>
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- GSAP for animations -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+
+  <!-- Icons (for buttons) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+  <style>
+    /* Custom background animation */
+    body {
+      overflow: hidden;
+      background: linear-gradient(135deg, #1f2937, #3b82f6);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Optional: Add subtle gradient animation */
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+
+    body {
+      background-size: 400% 400%;
+      animation: gradient 8s infinite alternate;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Main Content -->
+  <div id="content" class="text-center text-white space-y-10">
+    <h1 class="text-5xl font-extrabold mb-4 animate-title">🚀 Welcome to the OP Admin Dashboard 🚀</h1>
+    <p class="text-lg">Manage posts, code snippets, and more with style!</p>
+
+    <!-- Navigation Buttons -->
+    <div class="space-x-4">
+      <a href="/login.html"
+        class="px-6 py-3 bg-blue-600 hover:bg-blue-800 text-white rounded-full shadow-lg transition-transform transform hover:scale-110">
+        <i class="fas fa-user-lock"></i> Admin Login
+      </a>
+      <a href="/admin-dashboard.html"
+        class="px-6 py-3 bg-green-600 hover:bg-green-800 text-white rounded-full shadow-lg transition-transform transform hover:scale-110">
+        <i class="fas fa-tools"></i> Dashboard
+      </a>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button id="darkModeToggle"
+      class="mt-8 px-4 py-2 bg-gray-200 text-black rounded-full hover:bg-gray-400 transition-transform transform hover:scale-110">
+      <i class="fas fa-moon"></i> Toggle Dark Mode
+    </button>
+  </div>
+
+  <!-- GSAP Animation -->
+  <script>
+    // Animate Title
+    gsap.from(".animate-title", {
+      opacity: 0,
+      y: -50,
+      duration: 1,
+      ease: "bounce"
+    });
+
+    // Animate Navigation Buttons
+    gsap.from("a", {
+      opacity: 0,
+      scale: 0.5,
+      duration: 0.6,
+      stagger: 0.2,
+    });
+
+    // Dark Mode Toggle Logic
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    let isDarkMode = false;
+
+    darkModeToggle.addEventListener('click', () => {
+      isDarkMode = !isDarkMode;
+      document.body.style.background = isDarkMode
+        ? 'linear-gradient(135deg, #000000, #1f2937)'
+        : 'linear-gradient(135deg, #1f2937, #3b82f6)';
+    });
+  </script>
+</body>
+
+</html>
+
