@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+</head>
+<body class="bg-gray-100 p-10">
+    <h1 class="text-3xl font-bold mb-5">Admin Dashboard</h1>
+    <button id="logoutButton" class="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded">Logout</button>
+
+    <input type="text" id="searchBar" placeholder="Search Code Snippets..." class="w-full mb-4 p-2 border rounded">
+    <div id="snippetList" class="mt-4"></div>
+
+    <form id="postForm" class="bg-white p-5 rounded shadow-md">
+        <input type="text" id="title" placeholder="Post Title" class="w-full mb-4 p-2 border rounded">
+        <textarea id="code" placeholder="Enter your code" class="w-full mb-4 p-2 border rounded" rows="5"></textarea>
+        <button type="submit" class="w-full bg-green-500 hover:bg-green-700 text-white py-2 rounded">Post Code</button>
+    </form>
+
+    <script>
+        let snippets = [];
+
+        document.getElementById('postForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const code = document.getElementById('code').value;
+
+            const response = await fetch('/.netlify/functions/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, code })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                snippets.push(result.post);
+                renderSnippets(snippets);
+            }
+        });
+
+        function renderSnippets(snippets) {
+            const snippetList = document.getElementById('snippetList');
+            snippetList.innerHTML = snippets
+                .map(snippet => `
+                    <div class="p-4 bg-gray-100 mb-2 rounded">
+                        <h3 class="text-xl font-bold">${snippet.title}</h3>
+                        <pre><code>${snippet.code}</code></pre>
+                    </div>
+                `)
+                .join('');
+            gsap.from("#snippetList div", { opacity: 0, y: 50, stagger: 0.2, duration: 0.8 });
+        }
+
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        });
+    </script>
+</body>
+</html>
